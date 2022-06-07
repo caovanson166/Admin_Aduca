@@ -1,0 +1,64 @@
+
+
+
+<script type="text/javascript">
+
+function alertDone(title,content){
+    Swal.fire({
+        title: title,
+        html: '<b>'+content+'<b>',
+        timer: 3000,
+        timerProgressBar: true,
+        showCloseButton: true,
+        showCancelButton: true,
+        focusConfirm: true,
+    })
+}
+const sidebarToggle = document.querySelector('#sidebarToggle');
+    // sidebarToggle.addEventListener('click',function(){
+    //     if (sidebarToggle) {
+                // Uncomment Below to persist sidebar toggle between refreshes
+                // if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
+                //     document.body.classList.toggle('sb-sidenav-toggled');
+                // }
+                sidebarToggle.addEventListener('click', event => {
+                    event.preventDefault();
+                    document.body.classList.toggle('sb-sidenav-toggled');
+                    localStorage.setItem('sb|sidebar-toggle', document.body.classList.contains('sb-sidenav-toggled'));
+                });
+    //         }
+    // });
+var logout = document.getElementById('logout');
+logout.addEventListener('click',function(){
+
+    const log = "https://api.duaca.top/api/admin/logout";
+
+    var token = getUrlParameter('token');
+
+    fetch(log, {
+        method: "POST",
+        headers: {
+            Accept: "application/json, text/plain, */*",
+            //"Content-Type": "application/json",
+            'Authorization': 'Bearer '+token,
+        },
+    })
+    .then((response) => response.json())
+    .then((data) => {
+        console.log(data);
+        if(data.message == ""){
+            delete_cookie("token");
+            window.location.href = 'login.html';
+        }else{
+            alert(data.message);
+        }
+        
+    })
+    .catch((err) => {
+        console.log(err);
+    });
+})
+
+
+
+</script>
